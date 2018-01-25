@@ -1,0 +1,27 @@
+Package: terminator
+Type: Package
+Title: Compute Global Terminator (Day/Night) Bands
+Version: 0.1.0
+Date: 2018-01-25
+Authors@R: c(
+    person("Bob", "Rudis", email = "bob@rud.is", role = c("aut", "cre"), 
+           comment = c(ORCID = "0000-0001-5670-2640")),
+    person("Joe", "Gallagher", email = "joedgallagher@gmail.com", role = "aut")
+  )
+Encoding: UTF-8
+Maintainer: Bob Rudis <bob@rud.is>
+Description: A good description goes here otherwise CRAN checks fail.
+URL: https://github.com/hrbrmstr/terminator
+BugReports: https://github.com/hrbrmstr/terminator/issues
+License: AGPL
+Suggests:
+    testthat,
+    covr
+Depends:
+    R (>= 3.2.0)
+Imports:
+    purrr,
+    Rcpp,
+    utils
+RoxygenNote: 6.0.1.9000
+LinkingTo: Rcpp

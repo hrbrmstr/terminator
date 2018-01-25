@@ -1,0 +1,57 @@
+---
+output: rmarkdown::github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# terminator
+
+Compute Global Terminator (Day/Night) Bands
+
+## Description
+
+Compute global terminator (day/night) bands which can be overlayed as day and night regions on a ggplot2 world map.
+
+## What's Inside The Tin
+
+The following functions are implemented:
+
+- `terminator`:	Compute a single termiantor band
+- `terminator_lat_lon`:	Generate a full set of terminator frames
+
+## Installation
+
+```{r eval=FALSE}
+devtools::install_github("hrbrmstr/terminator")
+```
+
+```{r message=FALSE, warning=FALSE, error=FALSE, include=FALSE}
+options(width=120)
+```
+
+## Usage
+
+```{r message=FALSE, warning=FALSE, error=FALSE, eval=TRUE}
+library(terminator)
+library(ggplot2)
+library(gganimate) # devtools::install_github("dgrtwo/gganimate")
+
+# current verison
+packageVersion("terminator")
+
+term_seq <- terminator_lat_lon()
+
+chart <- ggplot(term_seq, aes(frame = frame)) +
+  borders("world", colour = "gray90", fill = "gray85") +
+  geom_ribbon(aes(lat, ymax = lon), ymin = 90, alpha = 0.2) +
+  coord_equal(xlim = c(-180, 190), ylim = c(-58, 85), expand = 0) +
+  ggthemes::theme_map()
+
+gganimate(
+  chart, 
+  interval = 0.1, ani.width=1000, ani.height=600, 
+  filename = "terminator-animation.gif"
+)
+```
+
+![](terminator-animation.gif)
