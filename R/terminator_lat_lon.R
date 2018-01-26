@@ -9,7 +9,7 @@ terminator_lat_lon <- function(day = Sys.Date(), hrs_from=0, hrs_to=23, hrs_by=1
   purrr::map_df(seq(hrs_from, hrs_to, hrs_by), ~{
     terminator(
       as.integer((as.POSIXct(day) + (60*60*.x))),
-      -lon_from, lon_to, lon_by
+      lon_from, lon_to, lon_by
     ) -> out
     out$frame <- .x
     out
