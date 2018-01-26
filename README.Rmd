@@ -67,7 +67,7 @@ term_seq <- terminator_lat_lon()
 
 chart <- ggplot(term_seq, aes(frame = frame)) +
   borders("world", colour = "gray90", fill = "gray85") +
-  geom_ribbon(aes(lat, ymax = lon), ymin = 90, alpha = 0.2) +
+  geom_ribbon(aes(lon, ymax = lat), ymin = 90, alpha = 0.2) +
   coord_equal(xlim = c(-180, 190), ylim = c(-58, 85), expand = 0) +
   ggthemes::theme_map()
 

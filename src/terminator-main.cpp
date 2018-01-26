@@ -44,11 +44,11 @@ inline double ecliptic_obliquity(double j_day) {
 
   // compute epsilon
   return(23.43929111 -
-    T * (46.836769 / 3600.0
-         - T * (0.0001831 / 3600.0
-                + T * (0.00200340 / 3600.0
-                       - T * (0.576e-6 / 3600.0
-                              - T * 4.34e-8 / 3600.0)))));
+         T * (46.836769 / 3600.0
+                - T * (0.0001831 / 3600.0
+                         + T * (0.00200340 / 3600.0
+                         - T * (0.576e-6 / 3600.0
+                         - T * 4.34e-8 / 3600.0)))));
 
 }
 
@@ -97,40 +97,40 @@ DataFrame terminator(int time, double from = -180, double to = 180, double by = 
   // calculate latitude and longitude of terminator within specified range using time (in POSIXct format, e.g. `Sys.time()`)
   double j_day = get_julian(time);
 
-	double gst = get_gmst(j_day);
+  double gst = get_gmst(j_day);
 
-	std::vector< double > sunEclPos = sun_ecliptic_position(j_day);
+  std::vector< double > sunEclPos = sun_ecliptic_position(j_day);
 
   double eclObliq = ecliptic_obliquity(j_day);
 
-	std::vector< double > sunEqPos = sun_equatorial_position(sunEclPos[0], eclObliq);
+  std::vector< double > sunEqPos = sun_equatorial_position(sunEclPos[0], eclObliq);
 
-	std::vector< double > out_lat, out_lon;
+  std::vector< double > out_lat, out_lon;
 
-	out_lat.reserve(4000);
-	out_lon.reserve(4000);
+  out_lat.reserve(4000);
+  out_lon.reserve(4000);
 
-	int n=0;
+  int n=0;
 
-	for (double i=from; i<=to; i+=by) {
-	  n += 1;
-	  out_lat.push_back(i);
-    out_lon.push_back(
+  for (double i=from; i<=to; i+=by) {
+    n += 1;
+    out_lon.push_back(i);
+    out_lat.push_back(
       longitude(
         hour_angle(i, sunEqPos, gst),
         sunEqPos
       )
     );
-	}
+  }
 
-	out_lat.resize(n);
-	out_lon.resize(n);
+  out_lat.resize(n);
+  out_lon.resize(n);
 
-	return(
-	  DataFrame::create(
-	    Named("lat") = out_lat,
-	    Named("lon") = out_lon
-	  )
-	);
+  return(
+    DataFrame::create(
+      Named("lat") = out_lat,
+      Named("lon") = out_lon
+    )
+  );
 
 }
