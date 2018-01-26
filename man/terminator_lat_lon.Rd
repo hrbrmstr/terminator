@@ -4,10 +4,13 @@
 \alias{terminator_lat_lon}
 \title{Generate a full set of terminator frames}
 \usage{
-terminator_lat_lon(day = Sys.Date(), from = 0, to = 23, by = 1)
+terminator_lat_lon(day = Sys.Date(), hrs_from = 0, hrs_to = 23,
+  hrs_by = 1, lon_from = -180, lon_to = 190, lon_by = 0.5)
 }
 \arguments{
-\item{day, from, to, by}{setup for the hours sequence}
+\item{day, hrs_from, hrs_to, hrs_by}{setup for the hours sequence}
+
+\item{lon_from, lon_to, lon_by}{latitude sequence setup}
 }
 \description{
 Generate a full set of terminator frames

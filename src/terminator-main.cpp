@@ -49,8 +49,9 @@ inline double ecliptic_obliquity(double j_day) {
         T * (0.0001831 / 3600.0 +
           T * (0.00200340 / 3600.0 -
             T * (0.576e-6 / 3600.0 -
-              T * 4.34e-8 / 3600.0)
+              T * 4.34e-8 / 3600.0
             )
+          )
         )
       )
   );
@@ -137,7 +138,7 @@ DataFrame terminator(int time, double from = -180, double to = 180, double by = 
     _["lon"] = out_lon
   );
 
-  df.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+  df.attr("class") = CharacterVector::create("terminator_df", "tbl_df", "tbl", "data.frame");
 
   return(df);
 
