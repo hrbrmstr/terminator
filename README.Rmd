@@ -55,9 +55,9 @@ microbenchmark::microbenchmark(
 
 mb
 ## Unit: microseconds
-##    expr        min        lq        mean      median          uq        max neval
-##  pure_r 178131.642 196554.32 206498.7256 204881.1060 214984.7260 339901.567   100
-##    rcpp    493.219    642.67    752.3545    747.8535    828.3085   1044.269   100
+##    expr        min          lq        mean      median         uq        max neval
+##  pure_r 142373.445 157488.8415 174413.4417 173927.7860 184725.916 272773.959   100
+##    rcpp    483.505    553.2455    641.8395    609.8245    692.899   2487.993   100
 ```
 
 Rather than use the built-in map data, we'll use an `rnaturalearth` so we don't need to mess with extended longitudes.
