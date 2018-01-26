@@ -59,6 +59,73 @@ mb
 ##    rcpp    493.219    642.67    752.3545    747.8535    828.3085   1044.269   100
 ```
 
+Rather than use the built-in map data, we’ll use an `rnaturalearth` so
+we don’t need to mess with extended longitudes.
+
+``` r
+library(ggalt)
+library(rnaturalearth) # ropensci/rnaturalearth
+
+world_map <- fortify(countries110)
+```
+
+    ## Regions defined for each Polygons
+
+``` r
+ggplot() +
+  geom_cartogram(
+    data=world_map, map=world_map, aes(x=long, y=lat, map_id=id),
+    fill=NA, color="#2b2b2b"
+  ) -> gg
+
+for (i in 0:23) {
+  
+  gg <- gg + geom_line(
+    data=terminator(as.integer((as.POSIXct(Sys.Date()) + (60*60*i))), -180, 180, 0.1),
+    aes(lon, lat), color="blue"
+  )
+}
+
+gg + coord_proj("+proj=wintri") + ggthemes::theme_map()
+```
+
+![](README_files/figure-gfm/wintri-1.png)<!-- -->
+
+Animation with `magick`:
+
+``` r
+library(magick)
+library(rnaturalearth) # ropensci/rnaturalearth
+library(tidyverse)
+
+world_map <- fortify(countries110, region="name")
+world_map <- filter(world_map, id != "Antarctica")
+
+x <- image_graph(width=1000*2, height=500*2, res=144)
+pb <- progress_estimated(24)
+for (i in 0:23) {
+  pb$tick()$print()
+  ggplot() +
+    geom_cartogram(
+      data=world_map, map=world_map, aes(x=long, y=lat, map_id=id),
+      fill=NA, color="#2b2b2b", size=0.125
+    ) +
+    geom_ribbon( 
+      data=terminator(as.integer((as.POSIXct(Sys.Date()) + (60*60*(i)))), -180, 180, 0.1),
+      aes(lon, ymin=lat, ymax=90), fill="lightslategray", alpha=1/2
+    ) +
+    scale_x_continuous(limits=c(-180, 180)) +
+    coord_quickmap() +
+    ggthemes::theme_map() -> gg
+  print(gg)
+}
+dev.off()
+x <- image_animate(x)
+image_write(x, "magick-preview.gif")
+```
+
+![](magick-preview.gif)
+
 Using Joe’s animation example:
 
 ``` r
@@ -66,7 +133,7 @@ term_seq <- terminator_lat_lon()
 
 chart <- ggplot(term_seq, aes(frame = frame)) +
   borders("world", colour = "gray90", fill = "gray85") +
-  geom_ribbon(aes(lat, ymax = lon), ymin = 90, alpha = 0.2) +
+  geom_ribbon(aes(lon, ymax = lat), ymin = 90, alpha = 0.2) +
   coord_equal(xlim = c(-180, 190), ylim = c(-58, 85), expand = 0) +
   ggthemes::theme_map()
 

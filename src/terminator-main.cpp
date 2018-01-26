@@ -77,22 +77,22 @@ inline std::vector< double > sun_equatorial_position(double lng, double obliq) {
 
 }
 
-inline double hour_angle(double lng, std::vector< double >sun_pos, double gst) {
-  return((gst + lng / 15.0) * 15.0 - sun_pos[0]);
+inline double hour_angle(double lat, std::vector< double >sun_pos, double gst) {
+  return((gst + lat / 15.0) * 15.0 - sun_pos[0]);
 }
 
-inline double longitude(double ha, std::vector< double >sun_pos) {
+inline double latitude(double ha, std::vector< double >sun_pos) {
   return(rad2deg(atan(-cos(deg2rad(ha)) / tan(deg2rad(sun_pos[1])))));
 }
 
 //' Compute a single termiantor band
 //'
-//' Returns a dataframe of latitude and longitude for the line that separates illuminated
+//' Returns a dataframe of longitude and latitude for the line that separates illuminated
 //' day and dark night for any given time
 //'
 //' @md
 //' @param time time (numeric from `POSIXct`) for the computation (bands are time-dependent)
-//' @param from,to,by latitude sequence setup
+//' @param from,to,by longitude sequence setup
 //' @return data frame
 //' @references <https://github.com/joergdietrich/Leaflet.Terminator/blob/master/L.Terminator.js>,
 //'     <https://github.com/JoGall/terminator/blob/master/terminator.R>
@@ -123,7 +123,7 @@ DataFrame terminator(int time, double from = -180, double to = 180, double by = 
     n += 1;
     out_lon.push_back(i);
     out_lat.push_back(
-      longitude(
+      latitude(
         hour_angle(i, sunEqPos, gst),
         sunEqPos
       )

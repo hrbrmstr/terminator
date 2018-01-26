@@ -3,12 +3,12 @@
 
 #' Compute a single termiantor band
 #'
-#' Returns a dataframe of latitude and longitude for the line that separates illuminated
+#' Returns a dataframe of longitude and latitude for the line that separates illuminated
 #' day and dark night for any given time
 #'
 #' @md
 #' @param time time (numeric from `POSIXct`) for the computation (bands are time-dependent)
-#' @param from,to,by latitude sequence setup
+#' @param from,to,by longitude sequence setup
 #' @return data frame
 #' @references <https://github.com/joergdietrich/Leaflet.Terminator/blob/master/L.Terminator.js>,
 #'     <https://github.com/JoGall/terminator/blob/master/terminator.R>
