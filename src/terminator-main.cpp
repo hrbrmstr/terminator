@@ -57,7 +57,7 @@ inline double ecliptic_obliquity(double j_day) {
 
 }
 
-std::vector< double > sun_equatorial_position(double lng, double obliq) {
+inline std::vector< double > sun_equatorial_position(double lng, double obliq) {
 
   double alpha = rad2deg(atan(cos(deg2rad(obliq)) * tan(deg2rad(lng))));
   double delta = rad2deg(asin(sin(deg2rad(obliq)) * sin(deg2rad(lng))));
