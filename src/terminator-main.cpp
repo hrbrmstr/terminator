@@ -22,10 +22,10 @@ inline std::vector < double > sun_ecliptic_position(double j_day) {
   double g = fmod((357.528 + 0.9856003 * n), 360.0);
 
   // ecliptic longitude of Sun
-  double lambda = L + 1.915 * sin(deg2rad(g)) + 0.02 * sin(2 * deg2rad(g));
+  double lambda = L + 1.915 * sin(deg2rad(g)) + 0.02 * sin(2.0 * deg2rad(g));
 
   // distance from Sun in AU
-  double R = 1.00014 - 0.01671 * cos(deg2rad(g)) - 0.0014 * cos(2 * deg2rad(g));
+  double R = 1.00014 - 0.01671 * cos(deg2rad(g)) - 0.0014 * cos(2.0 * deg2rad(g));
 
   std::vector< double > ret(2);
   ret[0] = lambda;
@@ -43,12 +43,17 @@ inline double ecliptic_obliquity(double j_day) {
   double T = n / 36525.0;
 
   // compute epsilon
-  return(23.43929111 -
-         T * (46.836769 / 3600.0
-                - T * (0.0001831 / 3600.0
-                         + T * (0.00200340 / 3600.0
-                         - T * (0.576e-6 / 3600.0
-                         - T * 4.34e-8 / 3600.0)))));
+  return(
+    23.43929111 -
+      T * (46.836769 / 3600.0 -
+        T * (0.0001831 / 3600.0 +
+          T * (0.00200340 / 3600.0 -
+            T * (0.576e-6 / 3600.0 -
+              T * 4.34e-8 / 3600.0)
+            )
+        )
+      )
+  );
 
 }
 
@@ -105,9 +110,10 @@ DataFrame terminator(int time, double from = -180, double to = 180, double by = 
 
   std::vector< double > sunEqPos = sun_equatorial_position(sunEclPos[0], eclObliq);
 
+  // for our return journey back to R
   std::vector< double > out_lat, out_lon;
 
-  out_lat.reserve(4000);
+  out_lat.reserve(4000); // handle the most common use-case
   out_lon.reserve(4000);
 
   int n=0;
@@ -126,11 +132,13 @@ DataFrame terminator(int time, double from = -180, double to = 180, double by = 
   out_lat.resize(n);
   out_lon.resize(n);
 
-  return(
-    DataFrame::create(
-      Named("lat") = out_lat,
-      Named("lon") = out_lon
-    )
+  DataFrame df = DataFrame::create(
+    _["lat"] = out_lat,
+    _["lon"] = out_lon
   );
+
+  df.attr("class") = CharacterVector::create("tbl_df", "tbl", "data.frame");
+
+  return(df);
 
 }

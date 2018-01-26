@@ -1,5 +1,3 @@
-utils::globalVariables(c(".x"))
-
 #' Generate a full set of terminator frames
 #'
 #' @param day,from,to,by setup for the hours sequence
